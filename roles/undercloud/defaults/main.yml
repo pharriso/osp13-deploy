@@ -1,0 +1,18 @@
+---
+
+local_ip: 192.168.24.1/24
+undercloud_public_host: 192.168.24.2
+undercloud_admin_host: 192.168.24.3
+subnets: ctlplane-subnet
+local_subnet: ctlplane-subnet
+local_interface: eth1
+undercloud_debug: true
+enable_tempest: true
+enable_ui: true
+cidr: 192.168.24.0/24
+dhcp_start: 192.168.24.5
+dhcp_end: 192.168.24.24
+inspection_iprange: 192.168.24.100,192.168.24.120
+gateway: 192.168.24.1
+
+root_password: Redhat123

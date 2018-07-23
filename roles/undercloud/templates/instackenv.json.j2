@@ -1,0 +1,24 @@
+{
+    "nodes": [
+{% for nodes in groups['overcloud'] %}
+        {
+            "name":"{{ hostvars[nodes].inventory_hostname }}",
+            "pm_type":"pxe_ipmitool",
+            "mac":[
+                "{{ hostvars[nodes].mac_address }}"
+            ],
+            "cpu":"2",
+            "memory":"4096",
+            "disk":"60",
+            "arch":"x86_64",
+            "pm_user":"admin",
+            "pm_password":"{{ hostvars[nodes].ipmi_password }}",
+            "pm_addr":"{{ hostvars[nodes].ipmi_address }}",
+            "pm_port":"{{ hostvars[nodes].ipmi_port }}",
+            "capabilities":"profile:{{ hostvars[nodes].profile }},boot_option:local"
+        }{% if not loop.last %},{% endif %}
+
+{% endfor %}
+   ]
+}
+

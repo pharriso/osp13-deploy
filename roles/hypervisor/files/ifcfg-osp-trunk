@@ -1,0 +1,3 @@
+DEVICE=osp-trunk
+TYPE=Bridge
+ONBOOT=yes

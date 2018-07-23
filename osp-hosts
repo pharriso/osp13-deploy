@@ -1,0 +1,15 @@
+[undercloud]
+undercloud13.example.com ansible_host=10.50.0.10 vcpu=4 memory=16 root_expand_size=40 sat_ak=osp13
+
+[overcloud]
+controller-1 profile=control ipmi_address=127.0.0.1 ipmi_port=6231 ipmi_password=password mac_address=52:54:00:6d:17:27
+compute-1 profile=compute ipmi_address=127.0.0.1 ipmi_port=6232 ipmi_password=password mac_address=52:54:00:d2:9c:65
+
+[vbmc]
+undercloud13.example.com
+
+[overcloud:vars]
+hypervisor=10.50.0.2
+
+[hypervisor]
+10.50.0.2

@@ -1,0 +1,15 @@
+---
+
+- name: install python-virtualbmc
+  yum: 
+    name: python-virtualbmc
+    state: installed
+
+- name: Define nodes in vbmc
+  shell: vbmc add {{ hostvars[item]['inventory_hostname'] }} --port {{ hostvars[item]['ipmi_port'] }} --username admin --password {{ hostvars[item]['ipmi_password'] }} --libvirt-uri qemu+ssh://root@{{ hostvars[item]['hypervisor'] }}/system
+  with_items: "{{ groups['overcloud'] }}"
+
+- name: Start vbmc
+  shell: vbmc start {{ hostvars[item]['inventory_hostname'] }}
+  with_items: "{{ groups['overcloud'] }}"
+

@@ -1,0 +1,22 @@
+---
+
+- name: Create root disk for node
+  shell: qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/{{ hostvars[item]['inventory_hostname'] }}.qcow2 50G
+  with_items: "{{ groups['overcloud'] }}"
+  args:
+    creates: /var/lib/libvirt/images/{{ hostvars[item]['inventory_hostname'] }}.qcow2
+  
+- name: Generate libvirt xml
+  shell: virt-install --ram 10240 --vcpus 4 --os-variant rhel7 --disk path=/var/lib/libvirt/images/{{ hostvars[item]['inventory_hostname'] }}.qcow2,device=disk,bus=virtio,format=qcow2 --noautoconsole --vnc --network network:{{ provisioning_network }} --name {{ hostvars[item]['inventory_hostname'] }} --dry-run --print-xml > /tmp/{{ hostvars[item]['inventory_hostname'] }}.xml
+  with_items: "{{ groups['overcloud'] }}"
+  args:
+    creates: /etc/libvirt/qemu/{{ hostvars[item]['inventory_hostname'] }}.xml
+
+- name: Define VM
+  virt:
+    name: "{{ hostvars[item]['inventory_hostname'] }}"
+    command: define
+    xml: "/tmp/{{ hostvars[item]['inventory_hostname'] }}.xml"
+  with_items: "{{ groups['overcloud'] }}"
+
+# Firewall rules for vbmc
