@@ -1,0 +1,7 @@
+<network>
+  <name>osp-prov</name>
+  <bridge name='virbr1' stp='on' delay='0'/>
+  <domain name='osp-prov'/>
+  <ip address='192.168.24.254' netmask='255.255.255.0'>
+  </ip>
+</network>

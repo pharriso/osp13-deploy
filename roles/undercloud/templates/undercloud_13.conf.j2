@@ -178,7 +178,7 @@ enable_ui = {{ enable_ui }}
 
 # Whether to install requirements to run the TripleO validations.
 # (boolean value)
-#enable_validations = true
+enable_validations = {{ enable_validations }}
 
 # Whether to install the Volume service. It is not currently used in
 # the undercloud. (boolean value)
@@ -205,7 +205,7 @@ enable_ui = {{ enable_ui }}
 
 # Whether to clean overcloud nodes (wipe the hard drive) between
 # deployments and after the introspection. (boolean value)
-#clean_nodes = false
+clean_nodes = {{ clean_nodes }}
 
 # DEPRECATED: List of enabled bare metal drivers. (list value)
 # This option is deprecated for removal.
