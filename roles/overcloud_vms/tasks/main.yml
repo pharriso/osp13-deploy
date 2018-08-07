@@ -1,0 +1,19 @@
+---
+
+- name: Create root disk for nodes
+  shell: qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/{{ inventory_hostname }}.qcow2 50G
+  args:
+    creates: /var/lib/libvirt/images/{{ inventory_hostname }}.qcow2
+  delegate_to: localhost
+  register: create_vm
+
+- name: Create additional disks if needed
+  shell: qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/{{ inventory_hostname }}-{{ item.disk_name }}.qcow2 {{ item.disk_size }}G
+  when: disks is defined and create_vm is changed
+  with_items: "{{ disks }}"
+  delegate_to: localhost
+
+- name: Define VM
+  virt: command=define name={{ inventory_hostname }} xml='{{ lookup('template', 'virt.xml.j2') }}'
+  register: result
+  delegate_to: localhost

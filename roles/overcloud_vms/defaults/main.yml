@@ -1,0 +1,5 @@
+---
+
+libvirt_network: osp-prov
+memory: 10
+vcpu: 4

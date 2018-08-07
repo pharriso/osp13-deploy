@@ -1,0 +1,7 @@
+---
+
+- hosts: overcloud
+  gather_facts: false
+  roles:
+    - virtual_network
+    - overcloud_vms

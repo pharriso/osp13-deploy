@@ -1,0 +1,63 @@
+---
+
+- name: Define provisioning network
+  virt_net:
+    command: define
+    name: "{{ provisioning_network }}"
+    xml: '{{ lookup("template", "osp-prov.xml.j2") }}'
+  delegate_to: localhost
+  run_once: true
+
+- name: Start Provisioning network
+  virt_net:
+    state: active
+    name: "{{ provisioning_network }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Set Provisioning network to autostart
+  virt_net:
+    autostart: yes
+    name: "{{ provisioning_network }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Define the trunk bridge
+  copy:
+    src: ifcfg-osp-trunk
+    dest: /etc/sysconfig/network-scripts
+  notify: restart network
+  delegate_to: localhost
+  run_once: true
+
+- name: Define OSP vlans
+  copy:
+    src: ifcfg-osp-trunk.{{ item }}
+    dest: /etc/sysconfig/network-scripts
+  with_items:
+    - 10    
+    - 20    
+    - 30    
+    - 40    
+    - 50    
+    - 60    
+  notify: restart network
+  delegate_to: localhost
+  run_once: true
+
+- name: Check if firewalld is running
+  shell: systemctl is-active firewalld
+  register: firewall_status
+  delegate_to: localhost
+  run_once: true
+  ignore_errors: true
+
+- name: Open firewall ports for IPMI
+  firewalld:
+    port: 6231-6239/tcp
+    permanent: true
+    state: enabled
+    immediate: true
+  delegate_to: localhost
+  run_once: true
+  when: firewall_status.stdout == 'active'
