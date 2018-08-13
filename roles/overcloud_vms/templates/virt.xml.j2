@@ -72,6 +72,7 @@
     <interface type='network'>
       <source network='{{ libvirt_network }}'/>
       <model type='virtio'/>
+      <boot order='2'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
     </interface>
 {% if nics is defined %}
