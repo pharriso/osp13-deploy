@@ -29,7 +29,7 @@
       <driver name='qemu' type='qcow2'/>
       <source file='/var/lib/libvirt/images/{{ inventory_hostname }}.qcow2'/>
       <target dev='vda' bus='virtio'/>
-      <boot order='1'/>
+      <boot order='2'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>
     </disk>
 {% if disks is defined %}
@@ -72,7 +72,7 @@
     <interface type='network'>
       <source network='{{ libvirt_network }}'/>
       <model type='virtio'/>
-      <boot order='2'/>
+      <boot order='1'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
     </interface>
 {% if nics is defined %}
