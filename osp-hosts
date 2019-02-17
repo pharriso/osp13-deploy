@@ -1,10 +1,16 @@
 [undercloud]
-undercloud13.example.com ansible_host=10.50.0.10 vcpu=4 memory=16 root_expand_size=40 sat_ak=osp13
+#undercloud.example.com ansible_host=10.50.0.10 vcpu=4 memory=16 root_expand_size=40 sat_ak=osp13
+localhost patch_reboot=false install_undercloud=false
 
+#[overcloud]
+#controller-1 profile=control ipmi_address=127.0.0.1 ipmi_port=6231 ipmi_password=password mac_address=52:54:00:6d:17:27 nics='[{"network": "osp-trunk" }]'
+#compute-1 profile=compute ipmi_address=127.0.0.1 ipmi_port=6232 ipmi_password=password mac_address=52:54:00:d2:9c:65 nics='[{"network": "osp-trunk" }]'
+#ceph-4 profile=ceph-storage ipmi_address=127.0.0.1 ipmi_port=6235 ipmi_password=password mac_address=52:54:00:ce:a7:69 disks='[{"disk_name": "osd", "disk_size": "30", "device": "vdb"}]' nics='[{"network": "osp-trunk" }]'
+
+#physical overcloud
 [overcloud]
-controller-1 profile=control ipmi_address=127.0.0.1 ipmi_port=6231 ipmi_password=password mac_address=52:54:00:6d:17:27 nics='[{"network": "osp-trunk" }]'
-compute-1 profile=compute ipmi_address=127.0.0.1 ipmi_port=6232 ipmi_password=password mac_address=52:54:00:d2:9c:65 nics='[{"network": "osp-trunk" }]'
-ceph-4 profile=ceph-storage ipmi_address=127.0.0.1 ipmi_port=6235 ipmi_password=password mac_address=52:54:00:ce:a7:69 disks='[{"disk_name": "osd", "disk_size": "30", "device": "vdb"}]' nics='[{"network": "osp-trunk" }]'
+controller-1 profile=control ipmi_address=127.0.0.1 ipmi_port=6231 ipmi_password=password mac_address=52:54:00:6d:17:27
+compute-1 profile=compute ipmi_address=127.0.0.1 ipmi_port=6232 ipmi_password=password mac_address=52:54:00:d2:9c:65
 
 [vbmc]
 undercloud13.example.com

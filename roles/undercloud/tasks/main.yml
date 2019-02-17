@@ -1,15 +1,29 @@
 
 - name: create the stack user
-  user: name=stack 
+  user: 
+    name: stack 
 
 - name: configure sudo for stack user
-  copy: content="stack ALL=(root) NOPASSWD:ALL" dest=/etc/sudoers.d/stack force=no group=root owner=root mode=0644
+  copy: 
+    content: "stack ALL=(root) NOPASSWD:ALL" 
+    dest: /etc/sudoers.d/stack 
+    force: no 
+    group: root 
+    owner: root 
+    mode: 0644
 
 - name: add director IP to /etc/hosts
-  lineinfile: dest=/etc/hosts line='127.0.0.1 {{ ansible_fqdn }} {{ ansible_hostname }}'
+  lineinfile: 
+    dest: /etc/hosts 
+    line: '127.0.0.1 {{ ansible_fqdn }} {{ ansible_hostname }}'
 
 - name: create images and templates directories
-  file: path=/home/stack/{{ item }} state=directory mode=0775 owner=stack group=stack
+  file: 
+    path: /home/stack/{{ item }} 
+    state: directory 
+    mode: 0775 
+    owner: stack 
+    group: stack
   with_items:
     - templates
     - images
@@ -24,7 +38,9 @@
   shell: sleep 10 && /sbin/shutdown -r now
   async: 300
   poll: 0
-  when: yum_update is changed
+  when: 
+    - yum_update is changed 
+    - patch_reboot
 
 - name: wait for server to come back from reboot
   local_action: wait_for
@@ -34,7 +50,9 @@
     delay: 30
     timeout: 600
     state: started
-  when: yum_update is changed
+  when: 
+    - yum_update is changed 
+    - patch_reboot
 
 - name: install director packages
   yum: 
@@ -66,6 +84,7 @@
     dest: /home/stack/undercloud.conf 
     owner: stack 
     group: stack
+  when: install_undercloud
 
 - name: install undercloud
   become: yes
@@ -73,6 +92,7 @@
   shell: openstack undercloud install
   args:
     creates: /home/stack/stackrc
+  when: install_undercloud
 
 - name: Create instackenv template
   template:
